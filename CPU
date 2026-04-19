@@ -23,6 +23,15 @@ top -bn1     → lots of output
 grep "Cpu"   → %Cpu(s):  4.5 us,  1.2 sy ...
 awk '{print $2} → 4.5
 
+if (( $(echo "$cpu > 20" | bc -l) )); then
+
+Shell reads it as:
+echo "$cpu > 20"    ← sends string "85 > 20" to bc
+        ↓
+bc -l calculates:   85 > 20
+        ↓
+returns: 1 (true) ✅
+
 Line 2 — Check and alert:
 
 if (( $(echo "$cpu > 20" | bc -l) )); then
@@ -31,6 +40,8 @@ echo "$cpu > 20"  → prints "4.5 > 20"
 bc -l             → evaluates → returns 1 or 0
 (( 1 ))           → true  → enter if block
 (( 0 ))           → false → go to else block
+
+
 
 ----------------------------
 
