@@ -37,6 +37,8 @@ bc -l             → evaluates → returns 1 or 0
 decimal value  → use bc -l
 integer value  → use -gt, -lt directly (no bc needed)
 
+bc is basically a calculator — it evaluates the math expression and returns 1 for true, 0 for false.
+
 If CPU value is integer (4, 85):
 
 # -gt → simpler, no bc needed ✅
