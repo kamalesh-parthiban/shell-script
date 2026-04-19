@@ -1,0 +1,48 @@
+cpu=$(top -bn1 | grep "Cpu" | awk '{print $2}')
+
+if (( $(echo "$cpu > 20" | bc -l) )); then
+  echo "High CPU" | mail -s "Alert" simbu7497@gmail.com
+  echo "Alert sent - CPU is $cpu%"
+else
+  echo "CPU is normal - $cpu%"
+fi
+
+
+---------------------------
+
+cpu=$(top -bn1 | grep "Cpu" | awk '{print $2}')
+
+top -bn1     → run top once in batch mode
+grep "Cpu"   → filter only CPU line
+awk '{print $2}' → extract 2nd column (cpu usage value)
+$()          → store result in variable cpu
+
+Example output of each step:
+
+top -bn1     → lots of output
+grep "Cpu"   → %Cpu(s):  4.5 us,  1.2 sy ...
+awk '{print $2} → 4.5
+
+Line 2 — Check and alert:
+
+if (( $(echo "$cpu > 20" | bc -l) )); then
+
+echo "$cpu > 20"  → prints "4.5 > 20"
+bc -l             → evaluates → returns 1 or 0
+(( 1 ))           → true  → enter if block
+(( 0 ))           → false → go to else block
+
+----------------------------
+
+decimal value  → use bc -l
+integer value  → use -gt, -lt directly (no bc needed)
+
+If CPU value is integer (4, 85):
+
+# -gt → simpler, no bc needed ✅
+if [ $cpu -gt 80 ]; then
+
+if (( ))   → arithmetic syntax
+if [ ]     → test/comparison syntax → needs -eq 1 to check bc output
+
+if [ $(echo "$cpu > 80" | bc -l) -eq 1 ]; then
