@@ -1,0 +1,35 @@
+#!/bin/bash
+
+THRESHOLD=12
+EMAIL="kamaleshparthiban0612@gmail.com"
+HOSTNAME=$(hostname)
+
+df -Th | grep -E 'xfs|ext4' | awk '{print $7 " " $6}' | while read mount usage
+do
+  use=$(echo $usage | sed 's/%//g')
+
+  if [ "$use" -ge "$THRESHOLD" ]; then
+    echo "ALERT: Disk usage on $mount is ${use}% on $HOSTNAME" | \                   -- The \ at the end of a line is called a line continuation character.
+    mail -s "Disk Alert: $mount usage ${use}%" $EMAIL                 -   $EMAIL is (recipient)
+
+  fi
+done
+
+--------------
+This is a while read loop (also called a "read loop" - to iterate through each disk/mount point and  if condition — inside the loop, to check threshold
+two variables — mount and usage -- It can be any name
+
+s  /  %  /  /  g
+|    |    |   |
+|    |    |   └── g = global (replace ALL occurrences)
+|    |    └──── replace WITH this (empty = nothing)
+|    └──────── find THIS pattern
+└──────────── s = substitute command
+
+echo "ALERT: Disk usage..." | mail -s "Disk Alert..." $EMAIL
+|                                    |                  |
+|                                    |                  └── TO (recipient)
+|                                    └── -s = subject flag
+└── body of the email (piped via echo)
+
+So it simply replaces % with nothing (empty string), which effectively deletes it.
