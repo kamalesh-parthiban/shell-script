@@ -48,3 +48,12 @@ if (( ))   → arithmetic syntax
 if [ ]     → test/comparison syntax → needs -eq 1 to check bc output
 
 if [ $(echo "$cpu > 80" | bc -l) -eq 1 ]; then
+------
+
+To increate cpu
+
+while true; do :;done &
+
+it will show pid it will help to kill
+
+
